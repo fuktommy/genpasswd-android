@@ -51,4 +51,17 @@ public class Base64Test extends TestCase {
         assertEquals("MTIzNDU2Nzg5MA==",
                      new Base64().encode("1234567890".getBytes()));
     }
+
+    public void testEncode20() throws Exception {
+        String src = "ABCDEFGHIJKLMNOPQRST";
+        assertEquals("QUJDREVGR0hJSktMTU5PUFFSU1Q=",
+                     new Base64().encode(src.getBytes()));
+    }
+
+    public void testEncodeBinary() throws Exception {
+        byte[] src = new byte[] {
+            (byte)84, (byte)220, (byte)190, (byte)103,
+        };
+        assertEquals("VNy+Zw==", new Base64().encode(src));
+    }
 }

@@ -26,18 +26,33 @@
 
 package com.fuktommy.genpasswd;
 
-import junit.framework.TestSuite;
+import junit.framework.Test;
+import junit.framework.TestCase;
 
-public class AllTests {
+public class HashTest extends TestCase {
 
-    public static void main (String[] args) {
-        junit.textui.TestRunner.run(suite());
+    public void testMakeHash() throws Exception {
+        String result = new Hash().makeHash(
+            "foo:bar", Hash.CharactorSet.ALL, 27);
+        assertEquals("VNy+Z9IdXrOUk9Rtia4fQS071t4", result);
     }
 
-    public static TestSuite suite () {
-        TestSuite suite= new TestSuite("Tests");
-        suite.addTest(new TestSuite(Base64Test.class));
-        suite.addTest(new TestSuite(HashTest.class));
-        return suite;
+    public void testMakeHashAlpha() throws Exception {
+        String result = new Hash().makeHash(
+            "foo:bar", Hash.CharactorSet.ALPHA_NUM, 27);
+        assertEquals("VNyZ9IdXrOUk9Rtia4fQS071t4", result);
     }
+
+    public void testMakeHashSize() throws Exception {
+        String result = new Hash().makeHash(
+            "foo:bar", Hash.CharactorSet.ALL, 6);
+        assertEquals("VNy+Z9", result);
+    }
+
+    public void testMakeHashAlphaSize() throws Exception {
+        String result = new Hash().makeHash(
+            "foo:bar", Hash.CharactorSet.ALPHA_NUM, 6);
+        assertEquals("VNyZ9I", result);
+    }
+
 }

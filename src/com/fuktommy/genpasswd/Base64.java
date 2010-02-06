@@ -44,12 +44,12 @@ public class Base64 {
         for (int i = 0; i < 3; i++) {
             tmp[i] = (i < length) ? src[i] : (byte)0;
         }
-        byte[] dst = new byte[4];
+        int[] dst = new int[4];
 
-        dst[0] = (byte)((0xFF & tmp[0]) >> 2);
-        dst[1] = (byte)((0x03 & tmp[0]) << 4 | (0xFF & tmp[1] >> 4));
-        dst[2] = (byte)((0x0F & tmp[1]) << 2 | (0xFF & tmp[2] >> 6));
-        dst[3] = (byte)((0x3F & tmp[2]));
+        dst[0] = 0x3F & ((0xFF & tmp[0]) >>> 2);
+        dst[1] = 0x3F & (((0x03 & tmp[0]) << 4) | ((0xFF & tmp[1]) >> 4));
+        dst[2] = 0x3F & (((0x0F & tmp[1]) << 2) | ((0xFF & tmp[2]) >> 6));
+        dst[3] = 0x3F & tmp[2];
 
         byte[] ret = new byte[4];
         for (int i = 0; i < length + 1; i++) {
