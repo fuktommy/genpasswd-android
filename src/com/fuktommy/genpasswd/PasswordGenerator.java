@@ -42,8 +42,6 @@ import android.widget.Toast;
 public class PasswordGenerator extends Activity
 {
     private final static int MENU_ITEM_ABOUT = 0;
-    private final static int CHARACTOR_ALL = 0;
-    private final static int CHARACTOR_ALPHA_NUM = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -76,7 +74,15 @@ public class PasswordGenerator extends Activity
         final Button button = (Button) findViewById(R.id.generate_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                generatePassword();
+                try {
+                    generatePassword();
+                } catch (java.io.UnsupportedEncodingException e) {
+                    displayError("encoding " + e.getMessage());
+                } catch (java.security.NoSuchAlgorithmException e) {
+                    displayError("hash " + e.getMessage());
+                } catch (Exception e) {
+                    displayError("Error " + e.getMessage());
+                }
             }
         });
     }
@@ -95,24 +101,32 @@ public class PasswordGenerator extends Activity
         return Integer.parseInt(getSpinnerValue(id));
     }
 
-    private int getSpinnerValueCharactorSet(int id) {
+    private Hash.CharactorSet getSpinnerValueCharactorSet(int id) {
         String str = getSpinnerValue(id);
         if (str.indexOf('+') >= 0) {
-            return CHARACTOR_ALL;
+            return Hash.CharactorSet.ALL;
         } else {
-            return CHARACTOR_ALPHA_NUM;
+            return Hash.CharactorSet.ALPHA_NUM;
         }
     }
 
-    private void generatePassword() {
+    private void generatePassword()
+        throws java.io.UnsupportedEncodingException,
+               java.security.NoSuchAlgorithmException {
         String domain = getTextViewValue(R.id.domain_field);
         String passphrase = getTextViewValue(R.id.passphrase_field);
         String salt = getTextViewValue(R.id.salt_field);
-        int charactor = getSpinnerValueCharactorSet(R.id.charactor_field);
+        Hash.CharactorSet charactor
+            = getSpinnerValueCharactorSet(R.id.charactor_field);
         int length = getSpinnerValueInt(R.id.length_field);
 
-        String password = domain + ":" + passphrase + ":"
-                        + salt + ":" + charactor + ":" + length;
+        String src = null;
+        if (salt.length() > 0) {
+            src = domain + ':' + salt + ':' + passphrase;
+        } else {
+            src = domain + ':' + passphrase;
+        }
+        String password = new Hash().makeHash(src, charactor, length);
 
         ClipboardManager cm 
             = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE); 
@@ -124,21 +138,28 @@ public class PasswordGenerator extends Activity
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void displayAbout() {
+    private void displayDialog(int title, String message) {
         DialogInterface.OnClickListener ocl
             = new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int whichButton) {
                     setResult(RESULT_OK);
                 }
             };
-
-        String message = getText(R.string.about_message).toString()
-                       + "\n\n\n"
-                       + getText(R.string.license).toString();
         new AlertDialog.Builder(this)
-            .setTitle(R.string.about)
+            .setTitle(title)
             .setMessage(message)
             .setNeutralButton(R.string.ok, ocl)
             .create().show();
+    }
+
+    private void displayAbout() {
+        String message = getText(R.string.about_message).toString()
+                       + "\n\n\n"
+                       + getText(R.string.license).toString();
+        displayDialog(R.string.about, message);
+    }
+
+    private void displayError(String message) {
+        displayDialog(R.string.error, message);
     }
 }

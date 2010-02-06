@@ -48,6 +48,29 @@
         classname="com.android.ant.SetupTask"
         classpathref="android.antlibs" />
 
+    <!-- JUnit -->
+    <target name="compile-test" depends="compile">
+        <mkdir dir="${tests.out.dir}"/>
+        <javac srcdir="${tests.source.dir}" destdir="${tests.out.dir}"
+               debug="true">
+            <classpath>
+                <pathelement location="${out.dir}/classes"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="check" depends="compile-test">
+        <junit haltonfailure="yes" printsummary="yes">
+            <formatter type="plain"/>
+                <classpath>
+                    <pathelement location="${out.dir}/classes"/>
+                    <pathelement location="${tests.out.dir}"/>
+                </classpath>
+            <test name="com.fuktommy.genpasswd.AllTests"/>
+        </junit>
+        <echo>Pass Tests.</echo>
+    </target>
+
     <!-- Execute the Android Setup task that will setup some properties specific to the target,
          and import the build rules files.
 

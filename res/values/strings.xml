@@ -6,6 +6,7 @@
     <string name="copy_to_clipboard">Copied password to clipboard. \"%s\";</string>
     <string name="domain_hint">example.com</string>
     <string name="domain_label">Domain</string>
+    <string name="error">Error</string>
     <string name="generate_label">Generate</string>
     <string name="length_label">Length</string>
     <string name="ok">OK</string>
