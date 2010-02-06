@@ -27,19 +27,31 @@
 package com.fuktommy.genpasswd;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class PasswordGenerator extends Activity
 {
     private final static int MENU_ITEM_ABOUT = 0;
+    private final static int CHARACTOR_ALL = 0;
+    private final static int CHARACTOR_ALPHA_NUM = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+ 
+        setGenerateButtonClickListener();
     }
 
     @Override
@@ -54,8 +66,79 @@ public class PasswordGenerator extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case MENU_ITEM_ABOUT:
+                displayAbout();
                 return true;
         }
         return true;
+    }
+
+    private void setGenerateButtonClickListener() {
+        final Button button = (Button) findViewById(R.id.generate_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                generatePassword();
+            }
+        });
+    }
+
+    private String getTextViewValue(int id) {
+        return ((TextView) findViewById(id)).getText().toString();
+    }
+
+    private String getSpinnerValue(int id) {
+        Spinner spinner = (Spinner) findViewById(id);
+        TextView textView = (TextView) spinner.getSelectedView();
+        return textView.getText().toString();
+    }
+
+    private int getSpinnerValueInt(int id) {
+        return Integer.parseInt(getSpinnerValue(id));
+    }
+
+    private int getSpinnerValueCharactorSet(int id) {
+        String str = getSpinnerValue(id);
+        if (str.indexOf('+') >= 0) {
+            return CHARACTOR_ALL;
+        } else {
+            return CHARACTOR_ALPHA_NUM;
+        }
+    }
+
+    private void generatePassword() {
+        String domain = getTextViewValue(R.id.domain_field);
+        String passphrase = getTextViewValue(R.id.passphrase_field);
+        String salt = getTextViewValue(R.id.salt_field);
+        int charactor = getSpinnerValueCharactorSet(R.id.charactor_field);
+        int length = getSpinnerValueInt(R.id.length_field);
+
+        String password = domain + ":" + passphrase + ":"
+                        + salt + ":" + charactor + ":" + length;
+
+        ClipboardManager cm 
+            = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE); 
+        cm.setText(password);
+
+        String format = getText(R.string.copy_to_clipboard).toString();
+        String message = String.format(format, password);
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void displayAbout() {
+        DialogInterface.OnClickListener ocl
+            = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int whichButton) {
+                    setResult(RESULT_OK);
+                }
+            };
+
+        String message = getText(R.string.about_message).toString()
+                       + "\n\n\n"
+                       + getText(R.string.license).toString();
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.about)
+            .setMessage(message)
+            .setNeutralButton(R.string.ok, ocl)
+            .create().show();
     }
 }

@@ -9,13 +9,13 @@
 <TextView
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Domain"
+    android:text="@+string/domain_label"
     />
 <EditText
     android:id="@+id/domain_field"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:hint="example.com"
+    android:hint="@+string/domain_hint"
     android:inputType="textAutoComplete"
     android:freezesText="true"
     />
@@ -24,10 +24,10 @@
 <TextView
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Master Password (Passphrase)"
+    android:text="@+string/passphrase_label"
     />
 <EditText
-    android:id="@+id/password_field"
+    android:id="@+id/passphrase_field"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:hint=""
@@ -40,14 +40,29 @@
     android:id="@+id/generate_button"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Generate"
+    android:text="@+string/generate_label"
+    />
+
+<!-- Salt Field -->
+<TextView
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@+string/salt_label"
+    />
+<EditText
+    android:id="@+id/salt_field"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:hint="@+string/salt_hint"
+    android:inputType="textAutoComplete"
+    android:freezesText="true"
     />
 
 <!-- Charactor Set Field -->
 <TextView
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content"
-    android:text="Charactor"
+    android:text="@+string/charactor_label"
     />
 <Spinner
     android:id="@+id/charactor_field"
@@ -60,7 +75,7 @@
 <TextView
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Length"
+    android:text="@+string/length_label"
     />
 <Spinner
     android:id="@+id/length_field"
@@ -69,20 +84,4 @@
     android:entries="@+array/length_labels"
     />
 
-<!-- Salt Field -->
-<TextView
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Optional Salt"
-    />
-<EditText
-    android:id="@+id/salt_field"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:hint="Optional Salt"
-    android:inputType="textAutoComplete"
-    android:freezesText="true"
-    />
-
 </LinearLayout>
-
