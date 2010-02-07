@@ -26,9 +26,14 @@
 
 package com.fuktommy.genpasswd;
 
+import java.net.URL;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.view.Menu;
@@ -50,6 +55,7 @@ public class PasswordGenerator extends Activity
         setContentView(R.layout.main);
  
         setGenerateButtonClickListener();
+        loadIntent();
     }
 
     @Override
@@ -85,6 +91,22 @@ public class PasswordGenerator extends Activity
                 }
             }
         });
+    }
+
+    private void loadIntent() {
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            return;
+        }
+        String uri = extras.getString(Intent.EXTRA_TEXT);
+        if (uri == null) {
+            return;
+        }
+        try {
+            String host = new URL(uri).getHost();
+            ((TextView) findViewById(R.id.domain_field)).setText(host);
+        } catch (java.net.MalformedURLException e) {
+        }
     }
 
     private String getTextViewValue(int id) {
