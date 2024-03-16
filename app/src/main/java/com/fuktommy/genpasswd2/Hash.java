@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2010 Satoshi Fukutomi <info@fuktommy.com>.
+// Copyright (c) 2010 Satoshi Fukutomi.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -36,10 +36,9 @@ public class Hash
         ALPHA_NUM,
     }
 
-    public String makeHash(String src, CharacterSet cs, int length)
-            throws java.io.UnsupportedEncodingException,
-            java.security.NoSuchAlgorithmException {
-        byte[] tmp = MessageDigest.getInstance("SHA-1")
+    String makeHash(final String src, final CharacterSet cs, final int length)
+            throws java.security.NoSuchAlgorithmException {
+        final byte[] tmp = MessageDigest.getInstance("SHA-1")
                 .digest(src.getBytes(StandardCharsets.US_ASCII));
         String hash = new Base64().encode(tmp);
         if (cs == CharacterSet.ALPHA_NUM) {

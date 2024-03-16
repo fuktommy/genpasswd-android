@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2010 Satoshi Fukutomi <info@fuktommy.com>.
+// Copyright (c) 2010 Satoshi Fukutomi.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,6 @@
 
 package com.fuktommy.genpasswd2;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -44,7 +43,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
@@ -53,12 +51,12 @@ public class MainActivity extends AppCompatActivity
     private final static int MENU_ITEM_ABOUT = 0;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar tb = (Toolbar) findViewById(R.id.my_toolbar);
+        final Toolbar tb = findViewById(R.id.my_toolbar);
         setSupportActionBar(tb);
 
         setGenerateButtonClickListener();
@@ -66,15 +64,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         super.onCreateOptionsMenu(menu);
-        MenuItem aboutItem = menu.add(0, MENU_ITEM_ABOUT, 0, R.string.about);
+        final MenuItem aboutItem = menu.add(0, MENU_ITEM_ABOUT, 0, R.string.about);
         aboutItem.setIcon(android.R.drawable.ic_menu_info_details);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == MENU_ITEM_ABOUT) {
             displayAbout();
             return true;
@@ -87,48 +85,44 @@ public class MainActivity extends AppCompatActivity
         button.setOnClickListener(v -> {
             try {
                 generatePassword();
-            } catch (java.io.UnsupportedEncodingException e) {
-                displayError("encoding " + e.getMessage());
-            } catch (java.security.NoSuchAlgorithmException e) {
-                displayError("hash " + e.getMessage());
             } catch (Exception e) {
-                displayError("Error " + e.getMessage());
+                displayError(e.getMessage());
             }
         });
     }
 
     private void loadIntent() {
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         if (extras == null) {
             return;
         }
-        String uri = extras.getString(Intent.EXTRA_TEXT);
+        final String uri = extras.getString(Intent.EXTRA_TEXT);
         if (uri == null) {
             return;
         }
         try {
-            String host = new URL(uri).getHost();
+            final String host = new URL(uri).getHost();
             ((TextView) findViewById(R.id.domain_field)).setText(host);
         } catch (java.net.MalformedURLException ignored) {
         }
     }
 
-    private String getTextViewValue(int id) {
+    private String getTextViewValue(final int id) {
         return ((TextView) findViewById(id)).getText().toString();
     }
 
-    private String getSpinnerValue(int id) {
-        Spinner spinner = findViewById(id);
-        TextView textView = (TextView) spinner.getSelectedView();
+    private String getSpinnerValue(final int id) {
+        final Spinner spinner = findViewById(id);
+        final TextView textView = (TextView) spinner.getSelectedView();
         return textView.getText().toString();
     }
 
-    private int getSpinnerValueInt(int id) {
+    private int getSpinnerValueInt(final int id) {
         return Integer.parseInt(getSpinnerValue(id));
     }
 
-    private Hash.CharacterSet getSpinnerValueCharacterSet(int id) {
-        String str = getSpinnerValue(id);
+    private Hash.CharacterSet getSpinnerValueCharacterSet(final int id) {
+        final String str = getSpinnerValue(id);
         if (str.indexOf('+') >= 0) {
             return Hash.CharacterSet.ALL;
         } else {
@@ -137,39 +131,38 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void generatePassword()
-            throws UnsupportedEncodingException,
-            NoSuchAlgorithmException {
-        String domain = getTextViewValue(R.id.domain_field);
-        String passphrase = getTextViewValue(R.id.passphrase_field);
-        String salt = getTextViewValue(R.id.salt_field);
+            throws NoSuchAlgorithmException {
+        final String domain = getTextViewValue(R.id.domain_field);
+        final String passphrase = getTextViewValue(R.id.passphrase_field);
+        final String salt = getTextViewValue(R.id.salt_field);
         Hash.CharacterSet character
                 = getSpinnerValueCharacterSet(R.id.charactor_field);
-        int length = getSpinnerValueInt(R.id.length_field);
+        final int length = getSpinnerValueInt(R.id.length_field);
 
         String src;
-        if (salt.length() > 0) {
+        if (!salt.isEmpty()) {
             src = domain + ':' + salt + ':' + passphrase;
         } else {
             src = domain + ':' + passphrase;
         }
-        String password = new Hash().makeHash(src, character, length);
+        final String password = new Hash().makeHash(src, character, length);
 
-        ClipData cd = ClipData.newPlainText("password", password);
-        PersistableBundle extras = new PersistableBundle();
+        final ClipData cd = ClipData.newPlainText("password", password);
+        final PersistableBundle extras = new PersistableBundle();
         extras.putBoolean("android.content.extra.IS_SENSITIVE", true);
         cd.getDescription().setExtras(extras);
-        ClipboardManager cm
+        final ClipboardManager cm
                 = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         cm.setPrimaryClip(cd);
 
-        String format = getText(R.string.copy_to_clipboard).toString();
-        String message = String.format(format, password);
+        final String format = getText(R.string.copy_to_clipboard).toString();
+        final String message = String.format(format, password);
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void displayDialog(int title, String message) {
-        DialogInterface.OnClickListener ocl
+    private void displayDialog(final int title, final String message) {
+        final DialogInterface.OnClickListener ocl
                 = (dialog, whichButton) -> setResult(RESULT_OK);
         new AlertDialog.Builder(this)
                 .setTitle(title)
@@ -179,13 +172,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displayAbout() {
-        String message = getText(R.string.about_message)
+        final String message = (getText(R.string.about_message)
                 + "\n\n\n"
-                + getText(R.string.license);
+                + getText(R.string.license))
+            .replaceAll("\n +", "\n");
         displayDialog(R.string.about, message);
     }
 
-    private void displayError(String message) {
+    private void displayError(final String message) {
         displayDialog(R.string.error, message);
     }
 }
