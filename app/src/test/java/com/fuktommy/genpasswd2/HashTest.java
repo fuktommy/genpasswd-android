@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2010 Satoshi Fukutomi <info@fuktommy.com>.
+// Copyright (c) 2010 Satoshi Fukutomi.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -31,25 +31,25 @@ import junit.framework.TestCase;
 public class HashTest extends TestCase {
 
     public void testMakeHash() throws Exception {
-        String result = new Hash().makeHash(
+        final String result = new Hash().makeHash(
                 "foo:bar", Hash.CharacterSet.ALL, 27);
         assertEquals("VNy+Z9IdXrOUk9Rtia4fQS071t4", result);
     }
 
     public void testMakeHashAlpha() throws Exception {
-        String result = new Hash().makeHash(
+        final String result = new Hash().makeHash(
                 "foo:bar", Hash.CharacterSet.ALPHA_NUM, 27);
         assertEquals("VNyZ9IdXrOUk9Rtia4fQS071t4", result);
     }
 
     public void testMakeHashSize() throws Exception {
-        String result = new Hash().makeHash(
+        final String result = new Hash().makeHash(
                 "foo:bar", Hash.CharacterSet.ALL, 6);
         assertEquals("VNy+Z9", result);
     }
 
     public void testMakeHashAlphaSize() throws Exception {
-        String result = new Hash().makeHash(
+        final String result = new Hash().makeHash(
                 "foo:bar", Hash.CharacterSet.ALPHA_NUM, 6);
         assertEquals("VNyZ9I", result);
     }

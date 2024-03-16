@@ -20,7 +20,7 @@
         base64(sha1(domain+\":\"+salt+\":\"+passphrase)).
         </string>
     <string name="license">
-        Copyright (c) 2010 Satoshi Fukutomi &lt;info@fuktommy.com&gt;.
+        Copyright (c) 2010 Satoshi Fukutomi.\n
         All rights reserved.\n
         \n
         Redistribution and use in source and binary forms, with or without
