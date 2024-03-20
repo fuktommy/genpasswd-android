@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
+    <string name="license">License</string>
     <string name="app_name">genpasswd</string>
     <string name="charactor_label">Charactor</string>
     <string name="copy_to_clipboard">Copied password to clipboard. \"%s\";</string>
@@ -19,7 +20,7 @@
         with algorithm base64(sha1(domain+\":\"+passphrase)) or
         base64(sha1(domain+\":\"+salt+\":\"+passphrase)).
         </string>
-    <string name="license">
+    <string name="license_message">
         Copyright (c) 2010 Satoshi Fukutomi.\n
         All rights reserved.\n
         \n

@@ -43,12 +43,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity
 {
     private final static int MENU_ITEM_ABOUT = 0;
+    private final static int MENU_ITEM_LICENSE = 1;
 
     @Override
     public void onCreate(final Bundle savedInstanceState)
@@ -66,8 +69,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         super.onCreateOptionsMenu(menu);
-        final MenuItem aboutItem = menu.add(0, MENU_ITEM_ABOUT, 0, R.string.about);
-        aboutItem.setIcon(android.R.drawable.ic_menu_info_details);
+        menu.add(0, MENU_ITEM_ABOUT, 0, R.string.about);
+        menu.add(0, MENU_ITEM_LICENSE, 0, R.string.license);
         return true;
     }
 
@@ -76,6 +79,10 @@ public class MainActivity extends AppCompatActivity
         if (item.getItemId() == MENU_ITEM_ABOUT) {
             displayAbout();
             return true;
+        }
+        if (item.getItemId() == MENU_ITEM_LICENSE) {
+           startActivity(new Intent(this, OssLicensesMenuActivity.class));
+           return false;
         }
         return true;
     }
@@ -174,7 +181,7 @@ public class MainActivity extends AppCompatActivity
     private void displayAbout() {
         final String message = (getText(R.string.about_message)
                 + "\n\n\n"
-                + getText(R.string.license))
+                + getText(R.string.license_message))
             .replaceAll("\n +", "\n");
         displayDialog(R.string.about, message);
     }
