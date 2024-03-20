@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
-    <string name="app_name">genpasswd2</string>
+    <string name="app_name">genpasswd</string>
     <string name="charactor_label">Charactor</string>
     <string name="copy_to_clipboard">Copied password to clipboard. \"%s\";</string>
     <string name="domain_hint">example.com</string>
