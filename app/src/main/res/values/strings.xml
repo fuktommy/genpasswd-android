@@ -11,7 +11,7 @@
     <string name="generate_label">Generate</string>
     <string name="length_label">Length</string>
     <string name="ok">OK</string>
-    <string name="passphrase_label">Master Password (Passphrase)</string>
+    <string name="passphrase_label">Encryption Key</string>
     <string name="passphrase_hint">password</string>
     <string name="salt_hint">salt</string>
     <string name="salt_label">Optional Salt</string>
