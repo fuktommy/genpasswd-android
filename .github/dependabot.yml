@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directories:
+      - "/"
+      - "/app"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 10
+    groups:
+      gradle:
+        patterns:
+          - "*"
