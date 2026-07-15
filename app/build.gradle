@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace 'com.fuktommy.genpasswd2'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.fuktommy.genpasswd2"
         minSdk 29
-        targetSdk 35
-        versionCode 10
-        versionName "10"
+        targetSdk 36
+        versionCode 13
+        versionName "13"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
